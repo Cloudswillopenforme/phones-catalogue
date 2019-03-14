@@ -1,22 +1,42 @@
 export default class PhonesList {
-    constructor({element, phones}) {
+    constructor({element, phones, onPhonesSelected}) {
         this._element = element;
         this._props = {
             phones: phones,
+            onPhonesSelected: onPhonesSelected,
         };
 
 
-
-
         this._render();
+        this._initEventListeners();
+
     }
+
+
+    _initEventListeners() {
+
+        this._element.addEventListener('click', (event) => {
+            const detailsLink = event.target.closest("[data-element='DetailsLink']");
+
+            if (!detailsLink) return;
+
+            this._props.onPhonesSelected(detailsLink.dataset.phoneId);
+
+        });
+    }
+
 
     _render() {
         this._element.innerHTML = `
         <ul class="phones">
         ${ this._props.phones.map(phone => `
                     <li class="thumbnail">
-                        <a href="#!/phones/${phone.id}" class="thumb">
+                        <a 
+                            data-element="DetailsLink"
+                            data-phone-id="${phone.id}"
+                            href="#!/phones/${phone.id}" 
+                            class="thumb"
+                        >
                             <img alt="${phone.name}" src="${phone.imageUrl}">
                         </a>
 
@@ -26,7 +46,13 @@ export default class PhonesList {
                             </a>
                         </div>
 
-                        <a href="#!/phones/${phone.id}">${phone.name}</a>
+                        <a 
+                            data-element="DetailsLink"
+                            data-phone-id="${phone.id}"
+                            href="#!/phones/${phone.id}"
+                        >
+                            ${phone.name}
+                        </a>
                         <p>${phone.snippet}</p>
                     </li>       
             `)
