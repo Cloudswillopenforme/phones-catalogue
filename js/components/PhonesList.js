@@ -1,6 +1,7 @@
 export default class PhonesList {
     constructor({element, phones, onPhonesSelected}) {
         this._element = element;
+
         this._props = {
             phones: phones,
             onPhonesSelected: onPhonesSelected,
@@ -16,9 +17,11 @@ export default class PhonesList {
     _initEventListeners() {
 
         this._element.addEventListener('click', (event) => {
-            const detailsLink = event.target.closest("[data-element='DetailsLink']");
+            const detailsLink = event.target.closest('[data-element="DetailsLink"]');
 
             if (!detailsLink) return;
+
+
 
             this._props.onPhonesSelected(detailsLink.dataset.phoneId);
 

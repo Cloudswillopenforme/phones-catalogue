@@ -11,30 +11,53 @@ export default class PhonesPage {
     constructor({element}) {
         this._element = element;
 
+        this._state = {
+            phones: PhonesService.getAll(),
+            selectedPhone: null,
+        };
+
         this._render();
 
-        this._phonesList = new PhonesList({
+        this._initList();
+        this._initCart();
+        this._initFilter();
+
+    }
+
+    _initList() {
+        this._list = new PhonesList({
             element: this._element.querySelector('[data-component="PhonesList"]'),
-            phones: PhonesService.getAll(),
+            phones: this._state.phones,
             onPhonesSelected: (phoneID) => {
-                console.log(phoneID);
+                const selectedPhone = PhonesService.getById(phoneID);
+                this._state.selectedPhone = selectedPhone;
+
+                this._render();
+                this._initViewer();
+                this._initCart();
+                this._initFilter();
+
             },
         });
+    };
 
+    _initCart() {
         this._cart = new ShoppingCart({
             element: this._element.querySelector('[data-component="ShoppingCart"]'),
         });
+    };
 
-
+    _initFilter() {
         this._filter = new Filter({
             element: this._element.querySelector('[data-component="Filter"]'),
         });
+    };
 
-
+    _initViewer() {
         this._viewer = new PhoneViewer({
             element: this._element.querySelector('[data-component="PhoneViewer"]'),
         });
-    }
+    };
 
     _render() {
         this._element.innerHTML = `
@@ -54,11 +77,15 @@ export default class PhonesPage {
 
             <!--Main content-->
             <div class="col-md-10">
-                <div data-component="PhonesList"></div>
-                <div data-component="PhoneViewer" hidden></div>
+                ${ this._state.selectedPhone ? `
+    
+                <div data-component="PhoneViewer"></div>
+                ` : `
+                 <div data-component="PhonesList"></div>
+                `}
+                </div>
             </div>
-        </div>
-        
-        `;
+            
+`;
     }
 }
