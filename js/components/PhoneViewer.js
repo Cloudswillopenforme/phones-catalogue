@@ -1,10 +1,11 @@
 export default class PhoneViewer {
-    constructor({element, onBackClicked}) {
+    constructor({element, onBackClicked, addToBasket}) {
         this._element = element;
 
         this._props = {
             phone: null,
             onBackClicked: onBackClicked,
+            addToBasket: addToBasket,
         };
 
         this._initEventListeners();
@@ -44,7 +45,15 @@ export default class PhoneViewer {
 
             this._showThumbnail(smallImg.src, smallImg.title);
 
-        })
+        });
+
+        this._element.addEventListener('click', (event) => {
+            if (event.target.closest(".phone-viewer__basket-button")) {
+                this._props.addToBasket(this._props.phone);
+            }
+
+        });
+
     }
 
     _render() {
@@ -58,7 +67,7 @@ export default class PhoneViewer {
     <img id="largeImg" title="image0" class="phone" src="${phone.images[0]}">
 
     <button data-element="backLink">Back</button>
-    <button>Add to basket</button>
+    <button class="phone-viewer__basket-button">Add to basket</button>
 
 
     <h1>${phone.name}</h1>
@@ -75,13 +84,13 @@ export default class PhoneViewer {
         <img src="${phone.images[2]}" title="image2">
       </li>
       <li>
-        <img src="${phone.images[3]}" title="image3">>
+        <img src="${phone.images[3]}" title="image3">
       </li>
       <li>
-        <img src="${phone.images[4]}" title="image4">>
+        <img src="${phone.images[4]}" title="image4">
       </li>
       <li>
-        <img src="${phone.images[5]}" title="image5">>
+        <img src="${phone.images[5]}" title="image5">
       </li>
       
     </ul>

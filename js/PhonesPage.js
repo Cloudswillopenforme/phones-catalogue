@@ -36,6 +36,11 @@ export default class PhonesPage {
                 this._viewer.show(selectedPhone);
 
             },
+
+            addToBasket: (phone) => {
+                const selectedPhone = PhonesService.getById(phone);
+                this._cart._addToBasket(selectedPhone);
+            }
         });
 
 
@@ -60,6 +65,12 @@ export default class PhonesPage {
                 this._viewer.hide();
                 this._list.show();
             },
+
+            addToBasket: (phone) => {
+                const selectedPhone = PhonesService.getById(phone);
+                this._cart._addToBasket(selectedPhone);
+            }
+
         });
     };
 
@@ -88,6 +99,6 @@ export default class PhonesPage {
                 </div>
             </div>
             
-`;
+        `;
     }
 }

@@ -1,10 +1,11 @@
 export default class PhonesList {
-    constructor({element, phones, onPhonesSelected}) {
+    constructor({element, phones, onPhonesSelected, addToBasket}) {
         this._element = element;
 
         this._props = {
             phones: phones,
             onPhonesSelected: onPhonesSelected,
+            addToBasket: addToBasket,
         };
 
 
@@ -27,11 +28,17 @@ export default class PhonesList {
         this._element.addEventListener('click', (event) => {
             const detailsLink = event.target.closest('[data-element="DetailsLink"]');
 
-            if (!detailsLink) return;
+            if (detailsLink)  {
+                this._props.onPhonesSelected(detailsLink.dataset.phoneId);
+            }
 
-
-
-            this._props.onPhonesSelected(detailsLink.dataset.phoneId);
+            if (event.target.closest(".phones__btn-buy-wrapper")) {
+                const phone = event.target
+                    .closest("li")
+                    .querySelector('[data-phone-id]')
+                    .dataset.phoneId;
+                this._props.addToBasket(phone);
+            }
 
         });
     }
