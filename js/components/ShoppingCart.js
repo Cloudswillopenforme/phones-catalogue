@@ -7,11 +7,25 @@ export default class ShoppingCart {
         }
 
         this._render();
+        this._initEventListener();
     }
 
     _addToBasket(phone){
         this._state.basket.push(phone);
         this._render();
+    }
+
+    _initEventListener() {
+        this._element.addEventListener('click', (event) => {
+            if (event.target.closest('.basket__delete-btn')) {
+                let name = event.target.closest(".basket__elem").querySelector(".basket__elem_name").innerText;
+                let phoneIndex = this._state.basket.findIndex(phone =>
+                    phone.name === name
+                )
+                this._state.basket.splice(phoneIndex, 1);
+                this._render();
+            }
+        });
     }
 
     _getBasketElements(){

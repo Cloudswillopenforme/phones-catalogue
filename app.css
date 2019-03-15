@@ -2,7 +2,7 @@
 
 body {
   padding-top: 20px;
-  background-color: lightgoldenrodyellow;
+  background-color: white;
 }
 
 .phone-images {
@@ -104,4 +104,19 @@ ul.specs dt {
 
 h1 {
   border-bottom: 1px solid gray;
+}
+
+.basket__delete-btn {
+  height: 17px;
+  width: 19px;
+  top: 5px;
+  right: 5px;
+  border-radius: 20px;
+  border: none;
+  background: #c1c1c1;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
 }
