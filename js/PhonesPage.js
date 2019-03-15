@@ -21,7 +21,7 @@ export default class PhonesPage {
         this._initList();
         this._initCart();
         this._initFilter();
-
+        this._initViewer();
     }
 
     _initList() {
@@ -30,12 +30,10 @@ export default class PhonesPage {
             phones: this._state.phones,
             onPhonesSelected: (phoneID) => {
                 const selectedPhone = PhonesService.getById(phoneID);
-                this._state.selectedPhone = selectedPhone;
 
-                this._render();
-                this._initViewer();
-                this._initCart();
-                this._initFilter();
+
+                this._list.hide();
+                this._viewer.show(selectedPhone);
 
             },
         });
@@ -77,12 +75,10 @@ export default class PhonesPage {
 
             <!--Main content-->
             <div class="col-md-10">
-                ${ this._state.selectedPhone ? `
-    
-                <div data-component="PhoneViewer"></div>
-                ` : `
-                 <div data-component="PhonesList"></div>
-                `}
+               
+                <div data-component="PhoneViewer" hidden></div>
+                <div data-component="PhonesList"></div>
+                
                 </div>
             </div>
             
