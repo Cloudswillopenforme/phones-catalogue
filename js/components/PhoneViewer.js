@@ -5,7 +5,7 @@ export default class PhoneViewer {
         this._props = {
             phone: null,
             onBackClicked: onBackClicked,
-        }
+        };
 
         this._initEventListeners();
     }
@@ -22,6 +22,11 @@ export default class PhoneViewer {
         this._props.phone = null;
     }
 
+    _showThumbnail(src, title) {
+        document.querySelector("#largeImg").src = src;
+        document.querySelector("#largeImg").title = title;
+    }
+
     _initEventListeners() {
         this._element.addEventListener('click', (event) => {
             const backLink = event.target.closest('[data-element="backLink"]');
@@ -31,6 +36,15 @@ export default class PhoneViewer {
             this._props.onBackClicked();
 
         });
+
+        this._element.addEventListener('click', (event) => {
+            const smallImg = event.target.closest('img[title^="image"]');
+
+            if(!smallImg) return;
+
+            this._showThumbnail(smallImg.src, smallImg.title);
+
+        })
     }
 
     _render() {
@@ -41,7 +55,7 @@ export default class PhoneViewer {
         
     <p>
 
-    <img class="phone" src="${phone.images[0]}">
+    <img id="largeImg" title="image0" class="phone" src="${phone.images[0]}">
 
     <button data-element="backLink">Back</button>
     <button>Add to basket</button>
@@ -52,22 +66,22 @@ export default class PhoneViewer {
     <p>${phone.description}</p>
     <ul class="phone-thumbs">
       <li>
-        <img src="${phone.images[0]}">
+        <img src="${phone.images[0]}" title="image0">
       </li>
       <li>
-        <img src="${phone.images[1]}">
+        <img src="${phone.images[1]}" title="image1">
       </li>
       <li>
-        <img src="${phone.images[2]}">
+        <img src="${phone.images[2]}" title="image2">
       </li>
       <li>
-        <img src="${phone.images[3]}">
+        <img src="${phone.images[3]}" title="image3">>
       </li>
       <li>
-        <img src="${phone.images[4]}">
+        <img src="${phone.images[4]}" title="image4">>
       </li>
       <li>
-        <img src="${phone.images[5]}">
+        <img src="${phone.images[5]}" title="image5">>
       </li>
       
     </ul>
