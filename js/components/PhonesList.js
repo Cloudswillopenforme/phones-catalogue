@@ -17,6 +17,10 @@ export default class PhonesList {
         this._element.hidden = true;
     }
 
+    show() {
+        this._element.hidden = false;
+    }
+
 
     _initEventListeners() {
 

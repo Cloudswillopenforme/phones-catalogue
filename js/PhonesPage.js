@@ -37,6 +37,8 @@ export default class PhonesPage {
 
             },
         });
+
+
     };
 
     _initCart() {
@@ -54,6 +56,10 @@ export default class PhonesPage {
     _initViewer() {
         this._viewer = new PhoneViewer({
             element: this._element.querySelector('[data-component="PhoneViewer"]'),
+            onBackClicked: () => {
+                this._viewer.hide();
+                this._list.show();
+            },
         });
     };
 
@@ -62,23 +68,23 @@ export default class PhonesPage {
         
             <div class="row">
 
-            <!--Sidebar-->
-            <div class="col-md-2">
-                <section>
-                    <div data-component="Filter"></div>
-                </section>
-
-                <section>
-                    <div data-component="ShoppingCart"></div>
-                </section>
-            </div>
-
-            <!--Main content-->
-            <div class="col-md-10">
-               
-                <div data-component="PhoneViewer" hidden></div>
-                <div data-component="PhonesList"></div>
-                
+                <!--Sidebar-->
+                <div class="col-md-2">
+                    <section>
+                        <div data-component="Filter"></div>
+                    </section>
+    
+                    <section>
+                        <div data-component="ShoppingCart"></div>
+                    </section>
+                </div>
+    
+                <!--Main content-->
+                <div class="col-md-10">
+                   
+                    <div data-component="PhoneViewer" hidden></div>
+                    <div data-component="PhonesList"></div>
+                    
                 </div>
             </div>
             

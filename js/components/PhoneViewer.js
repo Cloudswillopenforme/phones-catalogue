@@ -1,10 +1,13 @@
 export default class PhoneViewer {
-    constructor({element}) {
+    constructor({element, onBackClicked}) {
         this._element = element;
 
         this._props = {
             phone: null,
+            onBackClicked: onBackClicked,
         }
+
+        this._initEventListeners();
     }
 
     show(phone) {
@@ -14,40 +17,59 @@ export default class PhoneViewer {
         this._render();
     }
 
+    hide() {
+        this._element.hidden = true;
+        this._props.phone = null;
+    }
+
+    _initEventListeners() {
+        this._element.addEventListener('click', (event) => {
+            const backLink = event.target.closest('[data-element="backLink"]');
+
+            if (!backLink) return;
+
+            this._props.onBackClicked();
+
+        });
+    }
+
     _render() {
+
+        const { phone } = this._props;
+
         this._element.innerHTML = `
         
-    <div>
+    <p>
 
-    <img class="phone" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+    <img class="phone" src="${phone.images[0]}">
 
-    <button>Back</button>
+    <button data-element="backLink">Back</button>
     <button>Add to basket</button>
 
 
-    <h1>Motorola XOOM™ with Wi-Fi</h1>
+    <h1>${phone.name}</h1>
 
-    <p>Motorola XOOM with Wi-Fi has a super-powerful dual-core processor and Android™ 3.0 (Honeycomb) — the Android platform designed specifically for tablets. With its 10.1-inch HD widescreen display, you’ll enjoy HD video in a thin, light, powerful and upgradeable tablet.</p>
-
+    <p>${phone.description}</p>
     <ul class="phone-thumbs">
       <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+        <img src="${phone.images[0]}">
       </li>
       <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
+        <img src="${phone.images[1]}">
       </li>
       <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
+        <img src="${phone.images[2]}">
       </li>
       <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
+        <img src="${phone.images[3]}">
       </li>
       <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
+        <img src="${phone.images[4]}">
       </li>
       <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
+        <img src="${phone.images[5]}">
       </li>
+      
     </ul>
 
     <ul class="specs">
@@ -55,106 +77,116 @@ export default class PhoneViewer {
         <span>Availability and Networks</span>
         <dl>
           <dt>Availability</dt>
-          <dd></dd>
+          <dd>${phone.availability}</dd>
         </dl>
       </li>
       <li>
         <span>Battery</span>
         <dl>
           <dt>Type</dt>
-          <dd>Other ( mAH)</dd>
+          <dd>${phone.battery.type}</dd>
           <dt>Talk Time</dt>
-          <dd>24 hours</dd>
+          <dd>${phone.battery.talkTime}</dd>
           <dt>Standby time (max)</dt>
-          <dd>336 hours</dd>
+          <dd>${phone.battery.standbyTime}</dd>
         </dl>
       </li>
       <li>
         <span>Storage and Memory</span>
         <dl>
           <dt>RAM</dt>
-          <dd>1000MB</dd>
+          <dd>${phone.storage.ram}</dd>
           <dt>Internal Storage</dt>
-          <dd>32000MB</dd>
+          <dd>${phone.storage.flash}</dd>
         </dl>
       </li>
       <li>
         <span>Connectivity</span>
         <dl>
           <dt>Network Support</dt>
-          <dd></dd>
+          <dd>${phone.connectivity.cell}</dd>
           <dt>WiFi</dt>
-          <dd>802.11 b/g/n</dd>
+          <dd>${phone.connectivity.wifi}</dd>
           <dt>Bluetooth</dt>
-          <dd>Bluetooth 2.1</dd>
+          <dd>${phone.connectivity.bluetooth}</dd>
           <dt>Infrared</dt>
-          <dd>✘</dd>
+          <dd>${phone.connectivity.infrared  ? `
+                ✓` : `
+                ✘`}</dd>
           <dt>GPS</dt>
-          <dd>✓</dd>
+          <dd>${phone.connectivity.gps  ? `
+                ✓` : `
+                ✘`}</dd>
         </dl>
       </li>
       <li>
         <span>Android</span>
         <dl>
           <dt>OS Version</dt>
-          <dd>Android 3.0</dd>
+          <dd>${phone.android.os}</dd>
           <dt>UI</dt>
-          <dd>Honeycomb</dd>
+          <dd>${phone.android.ui}</dd>
         </dl>
       </li>
       <li>
         <span>Size and Weight</span>
         <dl>
           <dt>Dimensions</dt>
-          <dd>249.1 mm (w)</dd>
-          <dd>167.8 mm (h)</dd>
-          <dd>12.9 mm (d)</dd>
+          <dd>${phone.sizeAndWeight.dimensions[0]}</dd>
+          <dd>${phone.sizeAndWeight.dimensions[1]}</dd>
+          <dd>${phone.sizeAndWeight.dimensions[2]}</dd>
           <dt>Weight</dt>
-          <dd>708.0 grams</dd>
+          <dd>${phone.sizeAndWeight.weight}</dd>
         </dl>
       </li>
       <li>
         <span>Display</span>
         <dl>
           <dt>Screen size</dt>
-          <dd>10.1 inches</dd>
+          <dd>${phone.display.screenSize}</dd>
           <dt>Screen resolution</dt>
-          <dd>WXGA (1200 x 800)</dd>
+          <dd>${phone.display.screenResolution}</dd>
           <dt>Touch screen</dt>
-          <dd>✓</dd>
+          <dd>${phone.display.touchScreen ? `
+                ✓` : `
+                ✘`}</dd>
         </dl>
       </li>
       <li>
         <span>Hardware</span>
         <dl>
           <dt>CPU</dt>
-          <dd>1 GHz Dual Core Tegra 2</dd>
+          <dd>${phone.hardware.cpu}</dd>
           <dt>USB</dt>
-          <dd>USB 2.0</dd>
+          <dd>${phone.hardware.usb}</dd>
           <dt>Audio / headphone jack</dt>
-          <dd>3.5mm</dd>
+          <dd>${phone.hardware.audioJack}</dd>
           <dt>FM Radio</dt>
-          <dd>✘</dd>
+          <dd>${phone.hardware.fmRadio  ? `
+                ✓` : `
+                ✘`}</dd>
           <dt>Accelerometer</dt>
-          <dd>✓</dd>
+          <dd>${phone.hardware.accelerometer  ? `
+                ✓` : `
+                ✘`}</dd>
         </dl>
       </li>
       <li>
         <span>Camera</span>
         <dl>
           <dt>Primary</dt>
-          <dd>5.0 megapixels</dd>
+          <dd>${phone.camera.primary}</dd>
           <dt>Features</dt>
-          <dd>Flash, Video</dd>
+          <dd>${phone.camera.features}</dd>
         </dl>
       </li>
       <li>
         <span>Additional Features</span>
-        <dd>Sensors: proximity, ambient light, barometer, gyroscope</dd>
+        <dd>${phone.additionalFeatures}</dd>
       </li>
     </ul>
   </div>
     
         `;
     }
-}
+};
