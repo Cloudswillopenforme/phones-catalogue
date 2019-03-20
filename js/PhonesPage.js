@@ -4,59 +4,57 @@ import Filter from "./components/Filter.js";
 import PhoneViewer from "./components/PhoneViewer.js";
 import PhonesService from "./PhonesService.js";
 
-
-
-
 export default class PhonesPage {
-    constructor({element}) {
+    constructor({ element }) {
         this._element = element;
 
         this._state = {
-            phones: PhonesService.getAll(),
-            selectedPhone: null,
+            phones: null,
+            selectedPhone: null
         };
 
+        this.getPhones();
         this._render();
-
-        this._initList();
         this._initCart();
         this._initFilter();
         this._initViewer();
     }
 
+    getPhones = async () => {
+        const phones = await PhonesService.getAll();
+        this._state.phones = phones;
+        this._initList();
+    };
+
     _initList() {
         this._list = new PhonesList({
             element: this._element.querySelector('[data-component="PhonesList"]'),
             phones: this._state.phones,
-            onPhonesSelected: (phoneID) => {
-                const selectedPhone = PhonesService.getById(phoneID);
-
+            onPhonesSelected: async phoneID => {
+                const selectedPhone = await PhonesService.getById(phoneID);
 
                 this._list.hide();
                 this._viewer.show(selectedPhone);
-
             },
 
-            addToBasket: (phone) => {
-                const selectedPhone = PhonesService.getById(phone);
+            addToBasket: async phone => {
+                const selectedPhone = await PhonesService.getById(phone);
                 this._cart._addToBasket(selectedPhone);
             }
         });
-
-
-    };
+    }
 
     _initCart() {
         this._cart = new ShoppingCart({
-            element: this._element.querySelector('[data-component="ShoppingCart"]'),
+            element: this._element.querySelector('[data-component="ShoppingCart"]')
         });
-    };
+    }
 
     _initFilter() {
         this._filter = new Filter({
-            element: this._element.querySelector('[data-component="Filter"]'),
+            element: this._element.querySelector('[data-component="Filter"]')
         });
-    };
+    }
 
     _initViewer() {
         this._viewer = new PhoneViewer({
@@ -66,13 +64,12 @@ export default class PhonesPage {
                 this._list.show();
             },
 
-            addToBasket: (phone) => {
-                const selectedPhone = PhonesService.getById(phone);
+            addToBasket: async phone => {
+                const selectedPhone = await PhonesService.getById(phone);
                 this._cart._addToBasket(selectedPhone);
             }
-
         });
-    };
+    }
 
     _render() {
         this._element.innerHTML = `

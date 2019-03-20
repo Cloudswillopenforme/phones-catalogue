@@ -1,18 +1,17 @@
 export default class PhoneViewer {
-    constructor({element, onBackClicked, addToBasket}) {
+    constructor({ element, onBackClicked, addToBasket }) {
         this._element = element;
 
         this._props = {
             phone: null,
             onBackClicked: onBackClicked,
-            addToBasket: addToBasket,
+            addToBasket: addToBasket
         };
 
         this._initEventListeners();
     }
 
     show(phone) {
-
         this._props.phone = phone;
         this._element.hidden = false;
         this._render();
@@ -29,35 +28,30 @@ export default class PhoneViewer {
     }
 
     _initEventListeners() {
-        this._element.addEventListener('click', (event) => {
+        this._element.addEventListener("click", event => {
             const backLink = event.target.closest('[data-element="backLink"]');
 
             if (!backLink) return;
 
             this._props.onBackClicked();
-
         });
 
-        this._element.addEventListener('click', (event) => {
+        this._element.addEventListener("click", event => {
             const smallImg = event.target.closest('img[title^="image"]');
 
-            if(!smallImg) return;
+            if (!smallImg) return;
 
             this._showThumbnail(smallImg.src, smallImg.title);
-
         });
 
-        this._element.addEventListener('click', (event) => {
+        this._element.addEventListener("click", event => {
             if (event.target.closest(".phone-viewer__basket-button")) {
-                this._props.addToBasket(this._props.phone);
+                this._props.addToBasket(this._props.phone.id);
             }
-
         });
-
     }
 
     _render() {
-
         const { phone } = this._props;
 
         this._element.innerHTML = `
@@ -74,24 +68,17 @@ export default class PhoneViewer {
 
     <p>${phone.description}</p>
     <ul class="phone-thumbs">
+      
+      ${phone.images
+            .map(
+                image =>
+                    `
       <li>
-        <img src="${phone.images[0]}" title="image0">
+        <img src="${image}" title="image0">
       </li>
-      <li>
-        <img src="${phone.images[1]}" title="image1">
-      </li>
-      <li>
-        <img src="${phone.images[2]}" title="image2">
-      </li>
-      <li>
-        <img src="${phone.images[3]}" title="image3">
-      </li>
-      <li>
-        <img src="${phone.images[4]}" title="image4">
-      </li>
-      <li>
-        <img src="${phone.images[5]}" title="image5">
-      </li>
+      `
+            )
+            .join("")}      
       
     </ul>
 
@@ -133,13 +120,21 @@ export default class PhoneViewer {
           <dt>Bluetooth</dt>
           <dd>${phone.connectivity.bluetooth}</dd>
           <dt>Infrared</dt>
-          <dd>${phone.connectivity.infrared  ? `
-                ✓` : `
-                ✘`}</dd>
+          <dd>${
+            phone.connectivity.infrared
+                ? `
+                ✓`
+                : `
+                ✘`
+            }</dd>
           <dt>GPS</dt>
-          <dd>${phone.connectivity.gps  ? `
-                ✓` : `
-                ✘`}</dd>
+          <dd>${
+            phone.connectivity.gps
+                ? `
+                ✓`
+                : `
+                ✘`
+            }</dd>
         </dl>
       </li>
       <li>
@@ -170,9 +165,13 @@ export default class PhoneViewer {
           <dt>Screen resolution</dt>
           <dd>${phone.display.screenResolution}</dd>
           <dt>Touch screen</dt>
-          <dd>${phone.display.touchScreen ? `
-                ✓` : `
-                ✘`}</dd>
+          <dd>${
+            phone.display.touchScreen
+                ? `
+                ✓`
+                : `
+                ✘`
+            }</dd>
         </dl>
       </li>
       <li>
@@ -185,13 +184,21 @@ export default class PhoneViewer {
           <dt>Audio / headphone jack</dt>
           <dd>${phone.hardware.audioJack}</dd>
           <dt>FM Radio</dt>
-          <dd>${phone.hardware.fmRadio  ? `
-                ✓` : `
-                ✘`}</dd>
+          <dd>${
+            phone.hardware.fmRadio
+                ? `
+                ✓`
+                : `
+                ✘`
+            }</dd>
           <dt>Accelerometer</dt>
-          <dd>${phone.hardware.accelerometer  ? `
-                ✓` : `
-                ✘`}</dd>
+          <dd>${
+            phone.hardware.accelerometer
+                ? `
+                ✓`
+                : `
+                ✘`
+            }</dd>
         </dl>
       </li>
       <li>
@@ -212,4 +219,4 @@ export default class PhoneViewer {
     
         `;
     }
-};
+}
